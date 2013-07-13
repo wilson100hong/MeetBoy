@@ -1,6 +1,6 @@
  /* Custom container */
-body {
-    
+body.meeting {
+    padding-top: 60px;
 }
 
 .container-narrow {
