@@ -10,6 +10,6 @@ exports.index = function(req, res){
 };
 
 exports.meeting = function(req, res) {
-	res.render('meeting', {title: TITLE});
+  res.render('meeting', {title: TITLE});
 };
 

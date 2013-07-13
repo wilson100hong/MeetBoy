@@ -1,13 +1,20 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <html>
   <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="stylesheets/style.css"></link>
+    <link rel="stylesheet" href="stylesheets/carousel.css"></link>
     <script src="components/webrtc/webrtc.io.js"></script>
   </head>
   <body onload="init()">
     <div id="videos">
       <video id="you" class="flip" autoplay="true" controls  width="263" height="200" style="position: absolute; left: 0px; bottom: 0px;"></video>
     </div>
+
     <div id="chatbox">
       <div id="hideShowMessages" class="button">toggle chat</div>
       <div id="messages"></div>
