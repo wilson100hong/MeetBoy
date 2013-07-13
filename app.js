@@ -9,8 +9,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
 
-var app = express();
-    webRTC = require('webrtc.io').listen(app);
+var app = require('express')();
 
 module.exports = app;
 // all environments
@@ -36,6 +35,8 @@ app.post('/meeting', routes.meeting);
 app.get('/users', user.list);
 app.get('/uWvjW5697stsers', user.list);
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+var  webRTC = require('webrtc.io').listen(server);
