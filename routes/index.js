@@ -3,16 +3,18 @@
  * GET home page.
  */
 
-var TITLE = "Confertablb";
+var TITLE = "Confertable"; 
 
 exports.index = function(req, res){
   res.render('index', { title: TITLE });
 };
 
 exports.meeting = function(req, res) {
-    var name = req.body.name,
-        color = req.body.language;
-    console.log(name);
-	res.render('meeting', {title: TITLE});
+    var model = {
+        username: req.body.name,
+        language : req.body.language,
+        title: TITLE
+    };
+	res.render('meeting', model);
 };
 

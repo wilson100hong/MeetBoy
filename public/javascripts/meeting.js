@@ -12,6 +12,7 @@ var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
+var user;
 
 
 function showInfo(s) {
@@ -87,6 +88,7 @@ function initSpeech() {
 
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
+      
         input.value = linebreak(capitalize(event.results[i][0].transcript));
 
         chat.send(JSON.stringify({
@@ -94,7 +96,8 @@ function initSpeech() {
         "data": {
           "messages": input.value,
           "room": room,
-          "color": color
+          "color": color,
+          "lang" : recognition.lang
         }
         }));
         addToChat(input.value);
@@ -102,6 +105,13 @@ function initSpeech() {
       } else {
         interim_transcript += event.results[i][0].transcript;
         input.value = linebreak(interim_transcript);
+        
+        var msg = $('.user').filter(function(index){
+          
+          return ($(this).attr("user") == user);
+        }).find(".msg");
+
+        msg.html(linebreak(interim_transcript));    
       }
     }
     /*
@@ -145,7 +155,7 @@ function setWH(video, i) {
   var height = Math.floor((window.innerHeight - 190) / perColumn);
   video.width = width;
   video.height = height;
-  video.style.position = "absolute";
+  //video.style.position = "absolute";
   video.style.left = (i % perRow) * width + "px";
   video.style.top = Math.floor(i / perRow) * height + "px";
 }
@@ -282,12 +292,14 @@ function initChat() {
   rtc.on(chat.event, function() {
     var data = chat.recv.apply(this, arguments);
     console.log(data.color);
+    console.log(data.lang);
     addToChat(data.messages, data.color.toString(16));
   });
 }
 
 
-function init() {
+function init(lang,username) {
+  user = username;
   if(PeerConnection) {
     rtc.createStream({
       "video": {"mandatory": {}, "optional": []},
@@ -324,7 +336,7 @@ function init() {
   initSpeech();
   // Start speech recognition
   // TODO(stan): use language
-  recognition.lang = "en-US";
+  recognition.lang = lang;
   recognition.start();
   ignore_onend = false;
 }
