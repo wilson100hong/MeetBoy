@@ -70,7 +70,7 @@ function initSpeech() {
     if (ignore_onend) {
       return;
     }
-    start_img.src = 'mic.gif';
+    //start_img.src = 'mic.gif';
     if (!final_transcript) {
       showInfo('info_start');
       return;
