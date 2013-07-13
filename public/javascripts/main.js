@@ -1,0 +1,17 @@
+(function(){
+    // note: make sure hostname available to all connecting clients
+    // (ie. probably not `localhost`)
+    rtc.connect('ws://yourserveraddress:8001');
+
+    rtc.createStream({"video": true, "audio":false}, function(stream){
+    // get local stream for manipulation
+    rtc.attachStream(stream, 'local');
+    });
+
+    rtc.on('add remote stream', function(stream){
+        // show the remote video
+    rtc.attachStream(stream, 'remote');
+    });
+})();
+
+      
