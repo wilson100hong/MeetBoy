@@ -36,6 +36,26 @@ app.get('/meeting', routes.meeting);
 app.get('/users', user.list);
 app.get('/uWvjW5697stsers', user.list);
 
+
+var history = [];
+
+app.post('/record', function(req, res) {
+	console.log("Record");
+ 	history.push({
+ 	 	"name": req.body.name, 
+ 	 	"msg" : req.body.msg,
+ 	 	"lang": req.body.lang,
+ 	 	"color" : req.body.color,
+ 	 	"time" : req.body.time});
+ 	console.log(history);
+ 	res.send("OK");
+});
+
+app.get('/recall', function(req, res) {
+	console.log("Recall");
+	res.send(JSON.stringify(history)); 	
+});
+
 var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

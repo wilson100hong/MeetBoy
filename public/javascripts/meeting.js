@@ -87,7 +87,8 @@ function initSpeech() {
 
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
-        input.value = linebreak(capitalize(event.results[i][0].transcript));
+        var msg = linebreak(capitalize(event.results[i][0].transcript));
+        input.value = msg; 
 
         chat.send(JSON.stringify({
         "eventName": "chat_msg",
@@ -97,6 +98,17 @@ function initSpeech() {
           "color": color
         }
         }));
+        // TODO(wilsonhong): send message to server
+        $.post('/record', 
+          { "name": room,
+            "msg" : msg,
+            "lang": "en-US",
+            "color": color, 
+            "time" : 0},
+          function(data) {
+            console.log(data);
+        });
+
         addToChat(input.value);
         input.value = "";
       } else {
@@ -327,7 +339,17 @@ function init() {
   recognition.lang = "en-US";
   recognition.start();
   ignore_onend = false;
+
+  initHistory();
 }
+
+function initHistory() {
+   $.get('/recall', function(data) {
+      console.log(data);
+      // TODO(seed): put data into message log
+    });
+}
+
 
 window.onresize = function(event) {
   subdivideVideos();
