@@ -99,9 +99,8 @@ function initSpeech() {
           "lang" : recognition.lang
         }
         }));
-        // TODO(wilsonhong): send message to server
         $.post('/record', 
-          { "name": room,
+          { "name": room,   // TODO(wilson): room should be replaced with person's name
             "msg" : msg,
             "lang": "en-US",
             "color": color, 
