@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel="stylesheet" href="stylesheets/normalize.css">
-    <link rel="stylesheet" href="stylesheets/style.css">
-    <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap.css">
-    <script src="components/modernizr/modernizr.js"></script>
+  <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+      <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+        <html>
+          <head>
+            <title><%= title %></title>
+            <link rel="stylesheet" href="stylesheets/normalize.css">
+            <link rel="stylesheet" href="components/bootstrap/docs/assets/css/bootstrap.css">
+            <script src="components/modernizr/modernizr.js"></script>
 
-    <link rel="stylesheet" href="stylesheets/carousel.css"></link>
-    <script src="components/webrtc/webrtc.io.js"></script>
-  </head>
-  <body onload="init()">
-    <div id="videos">
-      <video id="you" class="flip" autoplay="true" controls  width="263" height="200" style="position: absolute; left: 0px; bottom: 0px;"></video>
-    </div>
+            <link rel="stylesheet" href="stylesheets/meeting.css">
+            <link rel="stylesheet" href="stylesheets/carousel.css"></link>
+            <script src="components/webrtc/webrtc.io.js"></script>
+          </head>
+          <body onload="init()">
 
-    <div id="chatbox">
-      <div id="hideShowMessages" class="button">toggle chat</div>
-      <div id="messages"></div>
-      <input id="chatinput" type="text" placeholder="Message:"/>
-    </div>
+            <div id="videos">
 
-    <div class="buttonBox">
-      <div id="speak" class="button">Speak</div>
-      <div id="fullscreen" class="button">Enter Full Screen</div>
-      <div id="newRoom" class="button">Create A New Room</div>
-    </div>
-    <script src="components/jquery/jquery.min.js"></script>
-    <script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
-    <script src="javascripts/meeting.js"></script>
-  </body>
-</html>
+              <div id="carousel">
+                <!--<video id="you" class="flip" autoplay="true" width="263" height="200"></video>-->
+                <figure><video id="you" class="flip" autoplay="true" width="400" height="300"></video></figure>
+                <figure>2</figure>
+              </div>
+            </div>
+
+            <div id="chatbox">
+              <!--<div id="hideShowMessages" class="button">toggle chat</div>-->
+              <div id="history_msg"></div>
+              <div id="temp_msg"></div>
+              <!--<input id="chatinput" type="text" placeholder="Message:"/>-->
+            </div>
+
+            <!--
+            <div class="buttonBox">
+              <div id="speak" class="button">Speak</div>
+              <div id="fullscreen" class="button">Enter Full Screen</div>
+              <div id="newRoom" class="button">Create A New Room</div>
+            </div>
+            -->
+
+            <script src="components/jquery/jquery.min.js"></script>
+            <script src="components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
+            <script src="javascripts/meeting.js"></script>
+          </body>
+        </html>

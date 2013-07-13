@@ -1,9 +1,10 @@
-.container {
+/*.container {
   width: 210px;
   height: 140px;
   position: relative;
   perspective: 1000px;
 }
+  */
 
 #carousel {
   width: 100%;
@@ -15,9 +16,13 @@
 #carousel figure {
   display: block;
   position: absolute;
-  width: 186px;
-  height: 116px;
+  width: 400px;
+  height: 300px;
   left: 10px;
   top: 10px;
-  border: 2px solid black;
+  border: 2px dotted black;
 }
+
+#carousel figure:nth-child(1) { transform: rotateY(   0deg ); }
+#carousel figure:nth-child(2) { transform: rotateY( 120deg ); }
+#carousel figure:nth-child(3) { transform: rotateY( 240deg ); }

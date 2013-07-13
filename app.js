@@ -32,6 +32,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.post('/meeting', routes.meeting);
+app.get('/meeting', routes.meeting);
 app.get('/users', user.list);
 app.get('/uWvjW5697stsers', user.list);
 
