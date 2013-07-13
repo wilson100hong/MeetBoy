@@ -3,15 +3,13 @@
  * GET home page.
  */
 
-exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
-};
+var TITLE = "Confertablb";
 
-exports.conf = function(req, res) {
-    res.render('conf', { title: 'Express' });
+exports.index = function(req, res){
+  res.render('index', { title: TITLE });
 };
 
 exports.meeting = function(req, res) {
-	res.render('meeting', {title: 'Express'});
+	res.render('meeting', {title: TITLE});
 };
 
