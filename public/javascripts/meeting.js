@@ -170,7 +170,7 @@ function removeVideo(socketId) {
 }
 
 function addToChat(msg, color) {
-  var messages = document.getElementById('messages');
+  var messages = document.getElementById('history_msg');
   msg = sanitize(msg);
   if(color) {
     msg = '<span style="color: ' + color + '; padding-left: 15px">' + msg + '</span>';
@@ -253,7 +253,7 @@ function initChat() {
   var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
   toggleHideShow.addEventListener('click', function() {
-    var element = document.getElementById("messages");
+    var element = document.getElementById("history_msg");
 
     if(element.style.display === "block") {
       element.style.display = "none";
@@ -296,9 +296,6 @@ function init() {
       document.getElementById('you').src = URL.createObjectURL(stream);
       document.getElementById('you').play();
       document.getElementById('you').muted = true;
-      //videos.push(document.getElementById('you'));
-      //rtc.attachStream(stream, 'you');
-      //subdivideVideos();
     });
   } else {
     alert('Your browser is not supported or you have to turn on flags. In chrome you go to chrome://flags and turn on Enable PeerConnection remember to restart chrome');

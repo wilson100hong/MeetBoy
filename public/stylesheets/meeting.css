@@ -22,12 +22,14 @@ body {
 }
 
 #history_msg {
-  height: 80%;
+  height: 50%;
 }
 
+/*
 #temp_msg {
   height: 20%;
 }
+  */
 
 .flip {
 -webkit-transform: rotateY(180deg);
