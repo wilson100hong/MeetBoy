@@ -2,16 +2,17 @@
 /**
  * Module dependencies.
  */
-
+/*
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
  
 
-var app = express(),
-    webRTC = require('webrtc.io').listen(app);
+var app = require(express(),
+    server = require('http').createServer(app),
+    webRTC = require('webrtc.io').listen(server);
 
 module.exports = app;
 
@@ -34,9 +35,54 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.post('/conf', routes.conf);
-app.get('/uWvjW5697stsers', user.list);
+//app.post('/conf', routes.conf);
+app.get('/meeting', routes.meeting);
+
+//app.get('/uWvjW5697stsers', user.list);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+    
+*/
+//-------------------------------
+
+var express = require('express')
+  , routes = require('./routes')
+  , user = require('./routes/user')
+  , http = require('http')
+  , path = require('path')
+
+var app = require('express')();
+var server = require('http').createServer(app);
+var webRTC = require('webrtc.io').listen(server);
+
+var port = process.env.PORT || 8080;
+server.listen(port);
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', routes.index);
+app.post('/conf', routes.conf);
+app.post('/meeting', routes.meeting);
+
+/*
+app.get('/', function(req, res) {
+  res.sendfile(__dirname + '/index.html');
+});
+
+app.get('/style.css', function(req, res) {
+  res.sendfile(__dirname + '/style.css');
+});
+
+app.get('/script.js', function(req, res) {
+  res.sendfile(__dirname + '/script.js');
+});
+
+app.get('/webrtc.io.js', function(req, res) {
+  res.sendfile(__dirname + '/webrtc.io.js');
+});
+*/

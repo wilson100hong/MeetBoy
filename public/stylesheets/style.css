@@ -27,3 +27,7 @@ body {
 }
 
 
+.flip {
+-webkit-transform: rotateY(180deg);
+}
+
