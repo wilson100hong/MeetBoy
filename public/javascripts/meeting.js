@@ -1,6 +1,117 @@
 var videos = [];
 var PeerConnection = window.PeerConnection || window.webkitPeerConnection00 || window.webkitRTCPeerConnection || window.mozRTCPeerConnection || window.RTCPeerConnection;
 
+
+// Global chat channel
+var chat;
+
+// Global speech recognition chaneel
+var recognition;
+// global variables used in speech recognition
+var final_transcript = '';
+var recognizing = false;
+var ignore_onend;
+var start_timestamp;
+
+
+function showInfo(s) {
+  console.log(s);
+}
+
+var two_line = /\n\n/g;
+var one_line = /\n/g;
+function linebreak(s) {
+  return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+}
+
+var first_char = /\S/;
+function capitalize(s) {
+  return s.replace(first_char, function(m) { return m.toUpperCase(); });
+}
+
+function initSpeech() {
+  if (!('webkitSpeechRecognition' in window)) {
+    console.log('Your browser does not support speech recognition');    
+  } 
+
+  recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onstart = function() {
+    recognizing = true;
+    showInfo('info_speak_now');
+    // start_img.src = 'mic-animate.gif';
+  };
+
+  recognition.onerror = function(event) {
+    if (event.error == 'no-speech') {
+      // start_img.src = 'mic.gif';
+      showInfo('info_no_speech');
+      ignore_onend = true;
+    }
+    if (event.error == 'audio-capture') {
+      // start_img.src = 'mic.gif';
+      showInfo('info_no_microphone');
+      ignore_onend = true;
+    }
+    if (event.error == 'not-allowed') {
+      if (event.timeStamp - start_timestamp < 100) {
+        showInfo('info_blocked');
+      } else {
+        showInfo('info_denied');
+      }
+      ignore_onend = true;
+    }
+  };
+
+  recognition.onend = function() {
+    recognizing = false;
+    if (ignore_onend) {
+      return;
+    }
+    start_img.src = 'mic.gif';
+    if (!final_transcript) {
+      showInfo('info_start');
+      return;
+    }
+  };
+
+  recognition.onresult = function(event) {
+    var interim_transcript = '';
+    
+    var input = document.getElementById("chatinput");
+    var room = window.location.hash.slice(1);
+    // TODO(seed): better color
+    var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
+
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        input.value = linebreak(capitalize(event.results[i][0].transcript));
+
+        chat.send(JSON.stringify({
+        "eventName": "chat_msg",
+        "data": {
+          "messages": input.value,
+          "room": room,
+          "color": color
+        }
+        }));
+        addToChat(input.value);
+        input.value = "";
+      } else {
+        interim_transcript += event.results[i][0].transcript;
+        input.value = linebreak(interim_transcript);
+      }
+    }
+    /*
+    if (final_transcript || interim_transcript) {
+      showButtons('inline-block');
+    }
+    */
+  };
+}
+
 function getNumPerRow() {
   var len = videos.length;
   var biggest;
@@ -43,7 +154,6 @@ function cloneVideo(domId, socketId) {
   var video = document.getElementById(domId);
   var clone = video.cloneNode(false);
   clone.id = "remote" + socketId;
-  // TODO(wilsonhong): mute? 
   clone.muted = false;
   document.getElementById('videos').appendChild(clone);
  
@@ -126,9 +236,9 @@ var dataChannelChat = {
   event: 'data stream data'
 };
 
-function initChat() {
-  var chat;
 
+
+function initChat() {
   if(rtc.dataChannelSupport) {
     console.log('initializing data channel chat');
     chat = dataChannelChat;
@@ -214,6 +324,12 @@ function init() {
   initFullScreen();
   initNewRoom();
   initChat();
+  initSpeech();
+  // Start speech recognition
+  // TODO(stan): use language
+  recognition.lang = "en-US";
+  recognition.start();
+  ignore_onend = false;
 }
 
 window.onresize = function(event) {
