@@ -10,6 +10,9 @@ exports.index = function(req, res){
 };
 
 exports.meeting = function(req, res) {
-  res.render('meeting', {title: TITLE});
+    var name = req.body.name,
+        color = req.body.language;
+    console.log(name);
+	res.render('meeting', {title: TITLE});
 };
 
