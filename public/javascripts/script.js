@@ -1,5 +1,4 @@
 var videos = [];
-var videos = [];
 var PeerConnection = window.PeerConnection || window.webkitPeerConnection00 || window.webkitRTCPeerConnection || window.mozRTCPeerConnection || window.RTCPeerConnection;
 
 function getNumPerRow() {
