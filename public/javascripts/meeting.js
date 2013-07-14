@@ -14,6 +14,14 @@ var ignore_onend;
 var start_timestamp;
 var user;
 
+var currentTime = function() {
+        var d = new Date(); // for now
+        var time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        return time;
+};
+
+//var color = "";
+var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
 function showInfo(s) {
   console.log(s);
@@ -84,28 +92,29 @@ function initSpeech() {
     var input = document.getElementById("chatinput");
     var room = window.location.hash.slice(1);
     // TODO(seed): better color
-    var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
+//    var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
         var msg = linebreak(capitalize(event.results[i][0].transcript));
         input.value = msg;
 
-        var d = new Date(); // for now
-        var time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        var time = currentTime();
         console.log(time);
 
         chat.send(JSON.stringify({
         "eventName": "chat_msg",
         "data": {
+          "name": user,
           "messages": msg,
           "room": room,
-          "color": color,
           "lang" : recognition.lang,
+          "color": color,
           "time" : time
         }
         }));
         // Also send message to server for history record
+        console.log(user);  // TEST: user name passed
         $.post('/record', 
           { "name": user,
             "msg" : msg,
@@ -116,7 +125,7 @@ function initSpeech() {
             console.log(data);
         });
 
-        addToChat(input.value);
+        addToChat(user, input.value, color, time);
         input.value = "";
       } else {
         interim_transcript += event.results[i][0].transcript;
@@ -202,14 +211,20 @@ function removeVideo(socketId) {
   }
 }
 
-function addToChat(msg, color) {
+function addToChat(name, msg, color, time) {
+  if (msg === undefined)
+    return;
+
   var messages = document.getElementById('history_msg');
   msg = sanitize(msg);
+  msg = '<span style="color: ' + color + '; padding-left: 15px">' + name + ":" + msg + " -- " + time + '</span>';
+    /*
   if(color) {
-    msg = '<span style="color: ' + color + '; padding-left: 15px">' + msg + '</span>';
+    msg = '<span style="color: ' + color + '; padding-left: 15px">' name + ":" + msg + " -- " + time'</span>';
   } else {
     msg = '<strong style="padding-left: 15px">' + msg + '</strong>';
   }
+  */
   messages.innerHTML = messages.innerHTML + msg + '<br>';
   messages.scrollTop = 10000;
 }
@@ -283,7 +298,7 @@ function initChat() {
   var input = document.getElementById("chatinput");
   var toggleHideShow = document.getElementById("hideShowMessages");
   var room = window.location.hash.slice(1);
-  var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
+//  var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
   toggleHideShow.addEventListener('click', function() {
     var element = document.getElementById("history_msg");
@@ -303,12 +318,14 @@ function initChat() {
       chat.send(JSON.stringify({
         "eventName": "chat_msg",
         "data": {
+          "name": user,
           "messages": input.value,
           "room": room,
           "color": color
         }
       }));
-      addToChat(input.value);
+               
+      addToChat(user, input.value, color, currentTime()); 
       input.value = "";
     }
   }, false);
@@ -316,7 +333,7 @@ function initChat() {
     var data = chat.recv.apply(this, arguments);
     console.log(data.color);
     console.log(data.lang);
-    addToChat(data.messages, data.color.toString(16));
+    addToChat(data.name, data.messages, data.color.toString(16), data.time);
   });
 }
 
@@ -366,9 +383,15 @@ function init(lang, username) {
 }
 
 function initHistory() {
-   $.get('/recall', function(data) {
-      console.log(data);
+   $.get('/recall', function(data_) {
+      console.log(data_);
+      var data = JSON.parse(data_);
       // TODO(seed): put data into message log
+      for(var i = 0; i<data.length; i++)  {
+        var item = data[i];
+        console.log(item);
+        addToChat(item.name, item.msg, item.color, item.time);
+      }
     });
 }
 
