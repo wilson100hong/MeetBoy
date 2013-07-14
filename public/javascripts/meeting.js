@@ -159,6 +159,12 @@ function subdivideVideos() {
 }
 
 function setWH(video, i) {
+  video.width = 263;
+  video.height = 200;
+}
+
+/*
+function setWH(video, i) {
   var perRow = getNumPerRow();
   var perColumn = Math.ceil(videos.length / perRow);
   var width = Math.floor((window.innerWidth) / perRow);
@@ -169,6 +175,7 @@ function setWH(video, i) {
   video.style.left = (i % perRow) * width + "px";
   video.style.top = Math.floor(i / perRow) * height + "px";
 }
+*/
 
 function cloneVideo(domId, socketId) {
   var video = document.getElementById(domId);
