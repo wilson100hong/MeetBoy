@@ -99,10 +99,11 @@ function initSpeech() {
           "lang" : recognition.lang
         }
         }));
+        // Also send message to server for history record
         $.post('/record', 
-          { "name": room,   // TODO(wilson): room should be replaced with person's name
+          { "name": user,
             "msg" : msg,
-            "lang": "en-US",
+            "lang": recognition.lang,
             "color": color, 
             "time" : 0},
           function(data) {
@@ -307,7 +308,7 @@ function initChat() {
 }
 
 
-function init(lang,username) {
+function init(lang, username) {
   user = username;
   if(PeerConnection) {
     rtc.createStream({
@@ -344,7 +345,6 @@ function init(lang,username) {
   initChat();
   initSpeech();
   // Start speech recognition
-  // TODO(stan): use language
   recognition.lang = lang;
   recognition.start();
   ignore_onend = false;
