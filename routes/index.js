@@ -18,12 +18,4 @@ exports.meeting = function(req, res) {
 	res.render('meeting', model);
 };
 
-exports.recorder = function(req, res) {
-	var name = req.body.name,
-		color = req.body.color;
-		lang = req.body.lang,
-		time = req.body.time;
-		
-
-}
 

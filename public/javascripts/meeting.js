@@ -89,14 +89,20 @@ function initSpeech() {
     for (var i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
         var msg = linebreak(capitalize(event.results[i][0].transcript));
-        input.value = msg; 
+        input.value = msg;
+
+        var d = new Date(); // for now
+        var time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        console.log(time);
+
         chat.send(JSON.stringify({
         "eventName": "chat_msg",
         "data": {
           "messages": msg,
           "room": room,
           "color": color,
-          "lang" : recognition.lang
+          "lang" : recognition.lang,
+          "time" : time
         }
         }));
         // Also send message to server for history record
@@ -105,7 +111,7 @@ function initSpeech() {
             "msg" : msg,
             "lang": recognition.lang,
             "color": color, 
-            "time" : 0},
+            "time" : time},
           function(data) {
             console.log(data);
         });
