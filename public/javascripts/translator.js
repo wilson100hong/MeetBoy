@@ -13,15 +13,23 @@ var Translator = {
 
           // When we add this script to the head, the request is sent off.
           document.getElementsByTagName('head')[0].appendChild(newScript);
+    },
+    detect : function() {
+      
     }
 }
 
 function translateText(response) {
-    debugger;
+    //debugger;
     var translateScripts = document.getElementsByClassName("google-translation");
     for(var i =0, length = translateScripts.length ;i< length; i++) {
          translateScripts[i].parentNode.removeChild(translateScripts[i]);    
     }
-   
-    document.getElementById("translation").innerHTML += "<br>" + response.data.translations[0].translatedText;
+    var messages = document.getElementById('messages');
+
+    messages.innerHTML = messages.innerHTML + response.data.translations[0].translatedText + '<br>';
+    messages.scrollTop = 10000;
+
+   //$(".msg").html(response.data.translations[0].translatedText); 
+    //document.getElementById("translation").innerHTML += "<br>" + response.data.translations[0].translatedText;
 }
