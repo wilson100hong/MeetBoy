@@ -214,8 +214,12 @@ function addToChat(msg, color) {
     msg = '<strong style="padding-left: 15px">' + msg + '</strong>';
   }
 
-   Translator.translate(msg,"en","zh-TW");
-   
+  if(lang == "en-US")
+    Translator._translate(msg,"zh-TW","en");
+  else {
+    Translator._translate(msg,"en","zh-TW");
+  }
+
   //messages.innerHTML = messages.innerHTML + msg + '<br>';
   //messages.scrollTop = 10000;
   
