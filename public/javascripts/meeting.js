@@ -71,7 +71,7 @@ function initSpeech() {
     if (ignore_onend) {
       return;
     }
-    //start_img.src = 'mic.gif';
+    start_img.src = 'mic.gif';
     if (!final_transcript) {
       showInfo('info_start');
       return;
@@ -122,12 +122,12 @@ function initSpeech() {
         interim_transcript += event.results[i][0].transcript;
         input.value = linebreak(interim_transcript);
         
-        var msg = $('.user').filter(function(index){
+        //var msg = $('.user').filter(function(index){
           
-          return ($(this).attr("user") == user);
-        }).find(".msg");
+          //return ($(this).attr("user") == user);
+        //}).find(".msg");
 
-        msg.html(linebreak(interim_transcript));    
+        $(".msg").html(linebreak(interim_transcript));    
       }
     }
     /*
@@ -203,7 +203,7 @@ function removeVideo(socketId) {
 }
 
 function addToChat(msg, color) {
-  var messages = document.getElementById('history_msg');
+  var messages = document.getElementById('messages');
   msg = sanitize(msg);
   if(color) {
     msg = '<span style="color: ' + color + '; padding-left: 15px">' + msg + '</span>';
@@ -212,6 +212,8 @@ function addToChat(msg, color) {
   }
   messages.innerHTML = messages.innerHTML + msg + '<br>';
   messages.scrollTop = 10000;
+
+   $(".msg").html(linebreak(msg)); 
 }
 
 function sanitize(msg) {
@@ -286,7 +288,7 @@ function initChat() {
   var color = "#" + ((1 << 24) * Math.random() | 0).toString(16);
 
   toggleHideShow.addEventListener('click', function() {
-    var element = document.getElementById("history_msg");
+    var element = document.getElementById("messages");
 
     if(element.style.display === "block") {
       element.style.display = "none";
@@ -317,6 +319,7 @@ function initChat() {
     console.log(data.color);
     console.log(data.lang);
     addToChat(data.messages, data.color.toString(16));
+
   });
 }
 
@@ -331,6 +334,9 @@ function init(lang, username) {
       document.getElementById('you').src = URL.createObjectURL(stream);
       document.getElementById('you').play();
       document.getElementById('you').muted = true;
+      //videos.push(document.getElementById('you'));
+      //rtc.attachStream(stream, 'you');
+      //subdivideVideos();
     });
   } else {
     alert('Your browser is not supported or you have to turn on flags. In chrome you go to chrome://flags and turn on Enable PeerConnection remember to restart chrome');

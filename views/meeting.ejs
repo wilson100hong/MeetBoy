@@ -44,6 +44,7 @@
           <div class="well sidebar-nav">
             <div id="chatbox">
               <div id="hideShowMessages" class="button">toggle chat</div>
+               <div id="messages"></div>
               <div id="history_msg"></div>
               <div id="temp_msg"></div>
               <input style="display:none" id="chatinput" type="text" placeholder="Message:"/>
@@ -61,16 +62,17 @@
         <div class="span9">
           <div class="hero-unit">
             <div class="user" user="<%=username%>">
-              <h1><%=username%></h1>
+              <!-- <h1><%=username%></h1> -->
               <div id="videos">
                 <video id="you" class="flip" autoplay="true" controls  width="263" height="200"></video>
               </div>
-              <p class="msg"></p>
+              
             </div>
 
-            
+           <p class="msg"></p> 
            <!--  <p><a href="#" class="btn btn-primary btn-large">Learn more »</a></p> -->
           </div>
+      
         </div><!--/span-->
       </div><!--/row-->
 
