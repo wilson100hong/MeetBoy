@@ -32,6 +32,7 @@ var Translator = {
 
 function detect(res) {
   var source = res.data.detections[0][0].language;
+  Translator._translate();
 }
 
 function translateText(response) {
@@ -41,6 +42,7 @@ function translateText(response) {
          translateScripts[i].parentNode.removeChild(translateScripts[i]);    
     }
     var messages = document.getElementById('messages');
+
 
     messages.innerHTML = messages.innerHTML + response.data.translations[0].translatedText + '<br>';
     messages.scrollTop = 10000;

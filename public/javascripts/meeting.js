@@ -202,10 +202,21 @@ function removeVideo(socketId) {
   }
 }
 
-function addToChat(msg, color) {
+function addToChat(msg, color,other) {
   var messages = document.getElementById('messages');
   msg = sanitize(msg);
 
+  if(other) {
+    
+    if(recognition.lang == "en-US")
+      Translator._translate(msg,"zh-TW","en");
+    else {
+      Translator._translate(msg,"en","zh-TW");
+    }  
+  } else {
+     messages.innerHTML = messages.innerHTML + msg + '<br>';
+     messages.scrollTop = 10000;
+  }
  
 
   if(color) {
@@ -214,11 +225,8 @@ function addToChat(msg, color) {
     msg = '<strong style="padding-left: 15px">' + msg + '</strong>';
   }
 
-  if(lang == "en-US")
-    Translator._translate(msg,"zh-TW","en");
-  else {
-    Translator._translate(msg,"en","zh-TW");
-  }
+
+  
 
   //messages.innerHTML = messages.innerHTML + msg + '<br>';
   //messages.scrollTop = 10000;
@@ -329,7 +337,7 @@ function initChat() {
     var data = chat.recv.apply(this, arguments);
     console.log(data.color);
     console.log(data.lang);
-    addToChat(data.messages, data.color.toString(16));
+    addToChat(data.messages, data.color.toString(16),true);
 
   });
 }
