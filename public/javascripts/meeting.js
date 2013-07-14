@@ -313,6 +313,7 @@ function initChat() {
   });
 
   input.addEventListener('keydown', function(event) {
+    console.log("chat input keydown");
     var key = event.which || event.keyCode;
     if(key === 13) {
       chat.send(JSON.stringify({
@@ -324,7 +325,17 @@ function initChat() {
           "color": color
         }
       }));
-               
+      var time = currentTime();
+      $.post('/record', 
+          { "name": user,
+            "msg" : input.value,
+            "lang": recognition.lang,
+            "color": color, 
+            "time" : time},
+          function(data) {
+            console.log(data);
+        });
+        
       addToChat(user, input.value, color, currentTime()); 
       input.value = "";
     }
@@ -395,6 +406,13 @@ function initHistory() {
     });
 }
 
+$("#report").on('click', function(e){
+  console.log("report clicked");
+  $.get("/dump");
+  //setTimeout(1, function(e){
+    window.open('/history.html');
+//  });
+});
 
 window.onresize = function(event) {
   subdivideVideos();

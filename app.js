@@ -7,9 +7,16 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
+  , fs = require('fs')
   , path = require('path');
 
 var app = require('express')();
+
+var currentTime = function() {
+        var d = new Date(); // for now
+        var time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        return time;
+};
 
 module.exports = app;
 // all environments
@@ -49,6 +56,19 @@ app.post('/record', function(req, res) {
  	 	"time" : req.body.time});
  	console.log(history);
  	res.send("OK");
+});
+
+app.get('/dump', function(req, res) {
+  console.log(history);
+  var msg = '';
+  for (var i = 0; i < history.length; i++){
+    var item = history[i];
+    msg += '<span style="color: ' + item.color + '; padding-left: 15px">' + item.name + ":" + item.msg + " -- " + item.time + '</span><br />';
+  }
+
+  console.log(msg);
+  
+  fs.writeFileSync(path.join(__dirname , "/public/history.html"), msg);
 });
 
 app.get('/recall', function(req, res) {
